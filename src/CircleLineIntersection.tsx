@@ -3,12 +3,10 @@ import ReactDOM from "react-dom";
 import BaseSVG from "./components/BaseSVG";
 import CircleDraggable from "./components/CircleDraggable";
 import { Vector2D } from "./util/math";
+import { usePointState } from "./util/usePointState";
 
 function CircleLineIntersection() {
-  const [circlePosition, setCirclePosition] = React.useState(
-    new Vector2D(50, 50)
-  );
-  const [circleDragging, setCircleDragging] = React.useState(false);
+  const circleState = usePointState(new Vector2D(50, 50));
 
   const svgRef = React.createRef<SVGSVGElement>();
 
@@ -17,8 +15,8 @@ function CircleLineIntersection() {
       ref={svgRef}
       onMouseMove={(e) => {
         const boundingRect = svgRef.current?.getBoundingClientRect();
-        if (circleDragging && boundingRect) {
-          setCirclePosition(
+        if (circleState.dragging && boundingRect) {
+          circleState.setPosition(
             new Vector2D(
               e.clientX - boundingRect.left,
               e.clientY - boundingRect.top
@@ -28,11 +26,11 @@ function CircleLineIntersection() {
       }}
     >
       <CircleDraggable
-        x={circlePosition.x}
-        y={circlePosition.y}
+        x={circleState.position.x}
+        y={circleState.position.y}
         radius={40}
-        dragging={circleDragging}
-        setDragging={setCircleDragging}
+        dragging={circleState.dragging}
+        setDragging={circleState.setDragging}
       />
     </BaseSVG>
   );
