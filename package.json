@@ -1,0 +1,21 @@
+{
+  "name": "ray-bounce-physics",
+  "version": "1.0.0",
+  "description": "Calculating the bounce effect of a point on a shape",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "node-sass": "5.0.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.6.1",
+    "typescript": "^4.1.3"
+  },
+  "keywords": [
+    "typescript",
+    "javascript"
+  ]
+}
