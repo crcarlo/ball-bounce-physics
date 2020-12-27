@@ -7,26 +7,8 @@ import Point from "./components/Point";
 import PointsDebug from "./components/PointsDebug";
 import { distance, Vector2D } from "./util/math";
 
-interface IPoint {
-  x: number;
-  y: number;
-  id: string;
-  draggable: boolean;
-}
-
-interface IState {
-  points: IPoint[];
-  dragging?: string;
-}
-
 const initialState: IState = {
   points: [
-    {
-      id: "C",
-      x: 100,
-      y: 100,
-      draggable: true,
-    },
     {
       id: "A",
       x: 200,
@@ -37,6 +19,12 @@ const initialState: IState = {
       id: "B",
       x: 100,
       y: 200,
+      draggable: true,
+    },
+    {
+      id: "C",
+      x: 100,
+      y: 100,
       draggable: true,
     },
   ],
@@ -100,10 +88,8 @@ function CircleLineIntersection() {
       error: distance(B, C) < 120,
       transparent: true,
     });
-  }
 
-  if (A && B) {
-    arrows.push({ start: A, end: B });
+    arrows.push({ start: A, end: B, error: distance(B, C) < 120 });
   }
 
   return (
@@ -134,8 +120,15 @@ function CircleLineIntersection() {
             transparent={transparent}
           />
         ))}
-        {arrows.map(({ start, end }) => (
-          <Arrow x1={start.x} y1={start.y} x2={end.x} y2={end.y} transparent />
+        {arrows.map(({ start, end, error }) => (
+          <Arrow
+            x1={start.x}
+            y1={start.y}
+            x2={end.x}
+            y2={end.y}
+            transparent
+            error={error}
+          />
         ))}
         {state.points.map(({ x, y, id, draggable }) => (
           <Point

@@ -28,16 +28,16 @@ export default function Arrow({
         x2={x2}
         y2={y2}
         stroke={error ? "red" : "black"}
-        stroke-dasharray={transparent ? 4 : 0}
+        strokeDasharray={transparent ? 4 : 0}
       />
       <g transform={`translate(${x2},${y2}) rotate(${angle})`}>
-        <line x1={-5} y1={-10} x2={0} y2={0} stroke={error ? "red" : "black"} />
-        <line x1={5} y1={-10} x2={0} y2={0} stroke={error ? "red" : "black"} />
+        <line x1={-5} y1={-14} x2={0} y2={-4} stroke={error ? "red" : "black"} />
+        <line x1={5} y1={-14} x2={0} y2={-4} stroke={error ? "red" : "black"} />
         <line
           x1={5}
-          y1={-10}
+          y1={-14}
           x2={-5}
-          y2={-10}
+          y2={-14}
           stroke={error ? "red" : "black"}
         />
       </g>
