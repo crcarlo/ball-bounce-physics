@@ -1,27 +1,33 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import InteractivePlot, { getPoint } from "./components/InteractivePlot";
-import { distance } from "./util/math";
-import { IDerivedElements, IState } from "./util/types";
+import InteractivePlot, { getPoint } from "../components/InteractivePlot";
+import { distance } from "../util/math";
+import { IDerivedElements, IState } from "../util/types";
 
 const initialState: IState = {
   points: [
     {
       id: "A",
-      x: 200,
-      y: 200,
+      x: 290,
+      y: 120,
       draggable: true,
     },
     {
       id: "B",
-      x: 100,
-      y: 200,
+      x: 390,
+      y: 120,
       draggable: true,
     },
     {
       id: "C",
-      x: 100,
-      y: 100,
+      x: 440,
+      y: 200,
+      draggable: true,
+    },
+    {
+      id: "?",
+      x: 370,
+      y: 85,
       draggable: true,
     },
   ],
@@ -29,11 +35,12 @@ const initialState: IState = {
 };
 
 const getDerivedElements = (state: IState): IDerivedElements | undefined => {
-  const C = getPoint("C", state);
   const A = getPoint("A", state);
   const B = getPoint("B", state);
+  const C = getPoint("C", state);
+  const Q = getPoint("?", state);
 
-  if (A && B && C) {
+  if (A && B && C && Q) {
     return {
       circles: [
         { center: C, radius: 60 },
@@ -44,25 +51,28 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
           error: distance(B, C) < 120,
           transparent: true,
         },
+        {
+          center: Q,
+          radius: 60,
+          error: distance(Q, C) < 120,
+          transparent: true,
+        },
       ],
-      arrows: [{ start: A, end: B, error: distance(B, C) < 120 }],
+      arrows: [
+        { start: A, end: B, error: distance(B, C) < 120 },
+        { start: B, end: Q },
+      ],
     };
   }
 };
 
-function CircleLineIntersection() {
-  return (
-    <InteractivePlot
-      initialState={initialState}
-      getDerivedElements={getDerivedElements}
-    />
-  );
-}
-
 export const mount = (id: string) => {
   ReactDOM.render(
     <React.StrictMode>
-      <CircleLineIntersection />
+      <InteractivePlot
+        initialState={initialState}
+        getDerivedElements={getDerivedElements}
+      />
     </React.StrictMode>,
     document.getElementById(id)
   );

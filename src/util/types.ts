@@ -22,7 +22,7 @@ export interface ICircle {
 export interface IArrow {
   start: Vector2D;
   end: Vector2D;
-  error: boolean;
+  error?: boolean;
 }
 
 export interface IDerivedElements {

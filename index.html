@@ -27,8 +27,28 @@
         and on t_n+1 is on B. <br />
         <br />
       </p>
+      <div class="interactive-example" id="movingBall"></div>
+      <span> Fig. 1 </span>
+      <p>
+        What may happen is that at a certain point the next state of the ball is
+        invalid because of a collision with another object (like a peg for
+        example). <br />
+        <br />
+        In this case we will consider a collision with a static ball (I.E. that
+        won't move) centered in C.
+      </p>
       <div class="interactive-example" id="circleLineIntersection"></div>
-      <h2>The problem simplified</h2>
+      <span> Fig. 2 </span>
+      <p>
+        At this point we might want to find a new valid state for our moving
+        ball by detecting the collision and following a bounce behaviour.
+        <br />
+        <br />
+        This means we want to find a new valid state for our ball. How?
+      </p>
+      <div class="interactive-example" id="theProblem"></div>
+      <span> Fig. 3 </span>
+      <h2>The simplified problem</h2>
       <h2>Circle-line intersection</h2>
     </div>
 
