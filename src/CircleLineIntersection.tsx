@@ -1,8 +1,10 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
+import Arrow from "./components/Arrow";
 import BaseSVG from "./components/BaseSVG";
 import Circle from "./components/Circle";
 import Point from "./components/Point";
+import { distance, Vector2D } from "./util/math";
 
 interface IPoint {
   x: number;
@@ -27,6 +29,12 @@ const initialState: IState = {
     {
       id: "A",
       x: 200,
+      y: 200,
+      draggable: true,
+    },
+    {
+      id: "B",
+      x: 100,
       y: 200,
       draggable: true,
     },
@@ -61,25 +69,40 @@ function reducer(state: IState, action: IAction): IState {
   }
 }
 
-const getPoint = (id: string, state: IState) =>
-  state.points.find((point) => point.id === id);
+const getPoint = (id: string, state: IState) => {
+  const point = state.points.find((point) => point.id === id);
+  if (point) {
+    return new Vector2D(point.x, point.y);
+  }
+};
 
 function CircleLineIntersection() {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const svgRef = React.createRef<SVGSVGElement>();
 
+  const arrows = [];
   const circles = [];
 
   const C = getPoint("C", state);
   const A = getPoint("A", state);
+  const B = getPoint("B", state);
 
-  if (C) {
-    circles.push({ x: C.x, y: C.y, radius: 60 });
+  if (A && B && C) {
+    circles.push({ center: C, radius: 60 });
+
+    circles.push({ center: A, radius: 60, error: distance(A, C) < 120 });
+
+    circles.push({
+      center: B,
+      radius: 60,
+      error: distance(B, C) < 120,
+      transparent: true,
+    });
   }
 
-  if (A) {
-    circles.push({ x: A.x, y: A.y, radius: 60 });
+  if (A && B) {
+    arrows.push({ start: A, end: B });
   }
 
   return (
@@ -100,8 +123,17 @@ function CircleLineIntersection() {
       }}
     >
       <>
-        {circles.map(({ x, y, radius }) => (
-          <Circle x={x} y={y} radius={radius} />
+        {circles.map(({ center, radius, error, transparent }) => (
+          <Circle
+            x={center.x}
+            y={center.y}
+            radius={radius}
+            error={error}
+            transparent={transparent}
+          />
+        ))}
+        {arrows.map(({ start, end }) => (
+          <Arrow x1={start.x} y1={start.y} x2={end.x} y2={end.y} transparent />
         ))}
         {state.points.map(({ x, y, id, draggable }) => (
           <Point
