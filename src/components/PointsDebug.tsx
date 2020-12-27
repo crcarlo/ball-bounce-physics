@@ -1,4 +1,5 @@
 import * as React from "react";
+import { IPoint } from "../util/types";
 
 interface PointsDebugProps {
   x: number;
