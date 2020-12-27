@@ -6,6 +6,7 @@ import Circle from "./Circle";
 import Point from "./Point";
 import PointsDebug from "./PointsDebug";
 import { IState, IAction, IDerivedElements } from "../util/types";
+import { POINTS_DEBUG } from "../util/env";
 
 function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
@@ -74,7 +75,7 @@ export default function InteractivePlot({
       }}
     >
       <>
-        <PointsDebug x={10} y={10} points={state.points} />
+        {POINTS_DEBUG && <PointsDebug x={10} y={10} points={state.points} />}
         {circles.map(({ center, radius, error, transparent }) => (
           <Circle
             x={center.x}
