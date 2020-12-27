@@ -4,6 +4,7 @@ import Arrow from "./components/Arrow";
 import BaseSVG from "./components/BaseSVG";
 import Circle from "./components/Circle";
 import Point from "./components/Point";
+import PointsDebug from "./components/PointsDebug";
 import { distance, Vector2D } from "./util/math";
 
 interface IPoint {
@@ -123,6 +124,7 @@ function CircleLineIntersection() {
       }}
     >
       <>
+        <PointsDebug x={10} y={10} points={state.points}></PointsDebug>
         {circles.map(({ center, radius, error, transparent }) => (
           <Circle
             x={center.x}
