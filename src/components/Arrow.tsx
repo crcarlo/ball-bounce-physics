@@ -18,7 +18,7 @@ export default function Arrow({
 }: ArrowProps) {
   const dx = x2 - x1;
   const dy = y2 - y1;
-  const angle = Math.atan(dy / dx) * (180 / Math.PI) + 90 + (dx > 0 ? 180 : 0);
+  const angle = Math.atan(dy / dx) * (180 / Math.PI) + 90 + (dx >= 0 ? 180 : 0);
 
   return (
     <>
