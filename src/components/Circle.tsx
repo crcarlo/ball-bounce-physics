@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import * as React from "react";
-import { Vector2D } from "../util/math";
 
 interface CircleProps {
   x: number;
@@ -32,7 +31,7 @@ export default function Circle({
         r={radius}
         stroke={error ? "red" : "black"}
         fill="transparent"
-        stroke-dasharray={transparent ? 4 : 0}
+        strokeDasharray={transparent ? 4 : 0}
       />
     </>
   );

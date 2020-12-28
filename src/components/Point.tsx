@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import * as React from "react";
 import { Vector2D } from "../util/math";
+import Label from "./Label";
 
 interface PointProps {
   x: number;
@@ -23,11 +24,7 @@ export default function Point({
 
   return (
     <>
-      {label && (
-        <text x={x + 7} y={y - 7} className="point-label">
-          {label}
-        </text>
-      )}
+      {label && <Label x={x + 7} y={y - 7} text={label} />}
       <circle
         className="point"
         cx={x}

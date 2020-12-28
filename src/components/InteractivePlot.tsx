@@ -7,6 +7,7 @@ import Point from "./Point";
 import PointsDebug from "./PointsDebug";
 import { IState, IAction, IDerivedElements } from "../util/types";
 import { POINTS_DEBUG } from "../util/env";
+import Line from "./Line";
 
 function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
@@ -55,7 +56,7 @@ export default function InteractivePlot({
     );
   }
 
-  const { circles, arrows } = derivedState;
+  const { circles, arrows, lines } = derivedState;
 
   return (
     <BaseSVG
@@ -83,6 +84,17 @@ export default function InteractivePlot({
             radius={radius}
             error={error}
             transparent={transparent}
+          />
+        ))}
+        {lines.map(({ start, end, error, label }) => (
+          <Line
+            x1={start.x}
+            y1={start.y}
+            x2={end.x}
+            y2={end.y}
+            label={label}
+            transparent
+            error={error}
           />
         ))}
         {arrows.map(({ start, end, error }) => (

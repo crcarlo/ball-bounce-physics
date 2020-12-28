@@ -17,3 +17,12 @@ body {
   &.point-dragging {
   }
 }
+
+.label-outline {
+  fill-opacity: 1;
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-opacity: 1;
+}

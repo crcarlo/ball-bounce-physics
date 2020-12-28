@@ -25,9 +25,17 @@ export interface IArrow {
   error?: boolean;
 }
 
+export interface ILine {
+  start: Vector2D;
+  end: Vector2D;
+  label?: string;
+  error?: boolean;
+}
+
 export interface IDerivedElements {
   circles: ICircle[];
   arrows: IArrow[];
+  lines: ILine[];
 }
 
 export interface IAction {
