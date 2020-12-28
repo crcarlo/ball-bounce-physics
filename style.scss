@@ -12,9 +12,8 @@ body {
 }
 
 .point {
-  cursor: pointer;
-
-  &.point-dragging {
+  &.point-draggable {
+    cursor: pointer;
   }
 }
 

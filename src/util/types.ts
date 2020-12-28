@@ -4,7 +4,7 @@ export interface IPoint {
   x: number;
   y: number;
   id: string;
-  draggable: boolean;
+  draggable?: boolean;
 }
 
 export interface IState {
@@ -36,6 +36,7 @@ export interface IDerivedElements {
   circles: ICircle[];
   arrows: IArrow[];
   lines: ILine[];
+  derivedPoints: IPoint[];
 }
 
 export interface IAction {

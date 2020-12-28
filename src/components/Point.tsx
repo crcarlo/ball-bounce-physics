@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import * as React from "react";
-import { Vector2D } from "../util/math";
+import clsx from "clsx";
+
 import Label from "./Label";
 
 interface PointProps {
@@ -18,15 +18,14 @@ export default function Point({
   y,
   label,
   setDragging,
+  draggable,
   dragging,
 }: PointProps) {
-  const [hovered, setHovered] = React.useState(false);
-
   return (
     <>
       {label && <Label x={x + 7} y={y - 7} text={label} />}
       <circle
-        className="point"
+        className={clsx("point", draggable && "point-draggable")}
         cx={x}
         cy={y}
         r={4}
@@ -37,8 +36,6 @@ export default function Point({
         onMouseUp={() => {
           setDragging(false);
         }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
       />
     </>
   );
