@@ -38,6 +38,7 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
       ],
       arrows: [{ start: A, end: B }],
       lines: [],
+      derivedPoints: [],
     };
   }
 };

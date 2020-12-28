@@ -51,6 +51,7 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
           error: distance(B, C) < 120,
         },
       ],
+      derivedPoints: [],
     };
   }
 };

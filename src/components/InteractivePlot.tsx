@@ -56,7 +56,7 @@ export default function InteractivePlot({
     );
   }
 
-  const { circles, arrows, lines } = derivedState;
+  const { circles, arrows, lines, derivedPoints } = derivedState;
 
   return (
     <BaseSVG
@@ -107,13 +107,29 @@ export default function InteractivePlot({
             error={error}
           />
         ))}
+        {derivedPoints.map(({ x, y, id }) => (
+          <Point
+            x={x}
+            y={y}
+            key={id}
+            label={id}
+            draggable={false}
+            dragging={state.dragging === id}
+            setDragging={(dragging) => {
+              dispatch({
+                type: "set-dragging",
+                dragging: dragging ? id : undefined,
+              });
+            }}
+          />
+        ))}
         {state.points.map(({ x, y, id, draggable }) => (
           <Point
             x={x}
             y={y}
             key={id}
             label={id}
-            draggable={draggable}
+            draggable={draggable || false}
             dragging={state.dragging === id}
             setDragging={(dragging) => {
               dispatch({

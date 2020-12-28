@@ -63,6 +63,7 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
         { start: B, end: Q },
       ],
       lines: [],
+      derivedPoints: [],
     };
   }
 };
