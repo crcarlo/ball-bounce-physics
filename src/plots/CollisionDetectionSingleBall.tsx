@@ -8,20 +8,20 @@ const initialState: IState = {
   points: [
     {
       id: "A",
-      x: 290,
-      y: 100,
+      x: 230,
+      y: 90,
       draggable: true,
     },
     {
       id: "B",
-      x: 390,
-      y: 100,
+      x: 330,
+      y: 90,
       draggable: true,
     },
     {
       id: "C",
-      x: 440,
-      y: 180,
+      x: 380,
+      y: 170,
       draggable: true,
     },
   ],
@@ -37,16 +37,20 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
     return {
       circles: [
         { center: C, radius: 60 },
-        { center: A, radius: 60, error: distance(A, C) < 120 },
-        {
-          center: B,
-          radius: 60,
-          error: distance(B, C) < 120,
-          transparent: true,
-        },
+        { center: C, radius: 120, transparent: true },
       ],
       arrows: [{ start: A, end: B, error: distance(B, C) < 120 }],
-      lines: [],
+      lines: [
+        {
+          start: B,
+          end: C,
+          label:
+            distance(B, C) < 120
+              ? "distance(B, C) < rB + rC = Collision!"
+              : "distance(B, C) > rB + rC = No collision",
+          error: distance(B, C) < 120,
+        },
+      ],
     };
   }
 };

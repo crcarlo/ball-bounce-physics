@@ -62,6 +62,7 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
         { start: A, end: B, error: distance(B, C) < 120 },
         { start: B, end: Q },
       ],
+      lines: [],
     };
   }
 };
