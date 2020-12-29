@@ -1,5 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap");
+
 body {
   background: #eee;
+  font-family: "Crimson Text", serif;
+}
+
+h1 {
+  font-size: 48px;
+  margin: 40px 0 46px;
+}
+
+h2 {
+  margin: 36px 0 20px;
+  font-size: 30px;
+}
+
+p {
+  font-size: 22px;
+  line-height: 28px;
 }
 
 .article {
