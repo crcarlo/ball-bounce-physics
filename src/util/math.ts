@@ -39,17 +39,17 @@ export class Vector2D {
   }
 }
 
-export interface ICircle {
+export interface MathCircle {
   center: Vector2D;
   radius: number;
 }
 
-export interface ILine {
+export interface MathLine {
   through: Vector2D;
   direction: Vector2D;
 }
 
-const sign = (x: number): number => (x === 0 ? 1 : Math.sign(x));
+const sign = (x: number): number => (x < 0 ? -1 : 1);
 
 /**
  * Source https://mathworld.wolfram.com/Circle-LineIntersection.html
@@ -65,7 +65,7 @@ const ceneteredCircleLineIntersection = (
   const d_x = x_2 - x_1;
   const d_y = y_2 - y_1;
   const d_r = Math.sqrt(d_x * d_x + d_y * d_y);
-  const D = x_1 * y_2 + x_2 * y_1;
+  const D = x_1 * y_2 - x_2 * y_1;
 
   const delta = radius * radius * d_r * d_r - D * D;
 
@@ -80,15 +80,15 @@ const ceneteredCircleLineIntersection = (
     return [new Vector2D(x_m_1, y_m_1)];
   }
 
-  const x_m_2 = (D * d_y + sign(d_y) * d_x * Math.sqrt(delta)) / (d_r * d_r);
-  const y_m_2 = (-D * d_x + Math.abs(d_y) * Math.sqrt(delta)) / (d_r * d_r);
+  const x_m_2 = (D * d_y - sign(d_y) * d_x * Math.sqrt(delta)) / (d_r * d_r);
+  const y_m_2 = (-D * d_x - Math.abs(d_y) * Math.sqrt(delta)) / (d_r * d_r);
 
   return [new Vector2D(x_m_1, y_m_1), new Vector2D(x_m_2, y_m_2)];
 };
 
 export const circleLineIntersection = (
-  circle: ICircle,
-  line: ILine
+  circle: MathCircle,
+  line: MathLine
 ): Vector2D[] => {
   const linePoint1 = line.through;
   const linePoint2 = line.through.add(line.direction);
@@ -104,7 +104,7 @@ export const circleLineIntersection = (
 
   return resultCentered
     .map((point) => point.add(circle.center))
-    .sort((point) => distance(point, linePoint1));
+    .sort((a, b) => distance(a, linePoint1) - distance(b, linePoint1));
 };
 
 export const distance = (a: Vector2D, b: Vector2D) =>
