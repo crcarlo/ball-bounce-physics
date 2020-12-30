@@ -28,7 +28,7 @@ const initialState: IState = {
   dragging: undefined,
 };
 
-const getDerivedElements = (state: IState): IDerivedElements | undefined => {
+const getDerivedElements = (state: IState): IDerivedElements => {
   const A = getPoint("A", state);
   const B = getPoint("B", state);
   const C = getPoint("C", state);
@@ -50,6 +50,8 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
       derivedPoints: [],
     };
   }
+
+  return {};
 };
 
 export const mount = (id: string) => {

@@ -33,10 +33,10 @@ export interface ILine {
 }
 
 export interface IDerivedElements {
-  circles: ICircle[];
-  arrows: IArrow[];
-  lines: ILine[];
-  derivedPoints: IPoint[];
+  circles?: ICircle[];
+  arrows?: IArrow[];
+  lines?: ILine[];
+  derivedPoints?: IPoint[];
 }
 
 export interface IAction {

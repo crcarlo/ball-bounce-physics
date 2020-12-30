@@ -28,21 +28,68 @@ function reducer(state: IState, action: IAction): IState {
   }
 }
 
-export const getPoint = (id: string, state: IState) => {
+export const getPoint = (
+  id: string,
+  state: IState,
+  derivedElements?: IDerivedElements
+) => {
   const point = state.points.find((point) => point.id === id);
   if (point) {
     return new Vector2D(point.x, point.y);
+  }
+  const pointDerived = derivedElements?.derivedPoints?.find(
+    (point) => point.id === id
+  );
+  if (pointDerived) {
+    return new Vector2D(pointDerived.x, pointDerived.y);
   }
 };
 
 interface InteractivePlotProps {
   initialState: IState;
-  getDerivedElements: (state: IState) => IDerivedElements | undefined;
+  getDerivedElements: (state: IState) => IDerivedElements;
+  nextDerivedElementsGetters?: ((
+    state: IState,
+    derivedElements: IDerivedElements
+  ) => IDerivedElements)[];
 }
+
+const mergeArrays = <T extends unknown>(a?: T[], b?: T[]): T[] => {
+  const _a = a || [];
+  const _b = b || [];
+  return [..._a, ..._b];
+};
+
+const mergeDerivedStates = (
+  a: IDerivedElements,
+  b: IDerivedElements
+): IDerivedElements => ({
+  arrows: mergeArrays(a.arrows, b.arrows),
+  circles: mergeArrays(a.circles, b.circles),
+  derivedPoints: mergeArrays(a.derivedPoints, b.derivedPoints),
+  lines: mergeArrays(a.lines, b.lines),
+});
+
+const getMergedDerivedStates = (
+  state: IState,
+  derivedState: IDerivedElements,
+  nextDerivedElementsGetters: ((
+    state: IState,
+    derivedElements: IDerivedElements
+  ) => IDerivedElements)[]
+) =>
+  mergeDerivedStates(
+    derivedState,
+    nextDerivedElementsGetters.reduce(
+      (acc, currGetter) => currGetter(state, acc),
+      derivedState
+    )
+  );
 
 export default function InteractivePlot({
   initialState,
   getDerivedElements,
+  nextDerivedElementsGetters,
 }: InteractivePlotProps) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -50,13 +97,11 @@ export default function InteractivePlot({
 
   const derivedState = getDerivedElements(state);
 
-  if (!derivedState) {
-    throw new Error(
-      "getDerivedElements is returning null! Check it and fix it!"
-    );
-  }
+  const mergedDerivedStates = nextDerivedElementsGetters
+    ? getMergedDerivedStates(state, derivedState, nextDerivedElementsGetters)
+    : derivedState;
 
-  const { circles, arrows, lines, derivedPoints } = derivedState;
+  const { circles, arrows, lines, derivedPoints } = mergedDerivedStates;
 
   return (
     <BaseSVG
@@ -77,7 +122,7 @@ export default function InteractivePlot({
     >
       <>
         {POINTS_DEBUG && <PointsDebug x={10} y={10} points={state.points} />}
-        {circles.map(({ center, radius, error, transparent }) => (
+        {circles?.map(({ center, radius, error, transparent }) => (
           <Circle
             x={center.x}
             y={center.y}
@@ -86,7 +131,7 @@ export default function InteractivePlot({
             transparent={transparent}
           />
         ))}
-        {lines.map(({ start, end, error, label }) => (
+        {lines?.map(({ start, end, error, label }) => (
           <Line
             x1={start.x}
             y1={start.y}
@@ -97,7 +142,7 @@ export default function InteractivePlot({
             error={error}
           />
         ))}
-        {arrows.map(({ start, end, error }) => (
+        {arrows?.map(({ start, end, error }) => (
           <Arrow
             x1={start.x}
             y1={start.y}
@@ -107,7 +152,7 @@ export default function InteractivePlot({
             error={error}
           />
         ))}
-        {derivedPoints.map(({ x, y, id }) => (
+        {derivedPoints?.map(({ x, y, id }) => (
           <Point
             x={x}
             y={y}

@@ -33,7 +33,7 @@ const initialState: IState = {
   dragging: undefined,
 };
 
-const getDerivedElements = (state: IState): IDerivedElements | undefined => {
+const getDerivedElements = (state: IState): IDerivedElements => {
   const A = getPoint("A", state);
   const B = getPoint("B", state);
   const C = getPoint("C", state);
@@ -50,7 +50,6 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
         { center: C, radius: 120, transparent: true },
       ],
       arrows: [{ start: A, end: B, error: distance(B, C) < 120 }],
-      lines: [],
       derivedPoints: points.map(({ x, y }, index) => ({
         id: `P${String(index + 1)}`,
         x,
@@ -58,7 +57,24 @@ const getDerivedElements = (state: IState): IDerivedElements | undefined => {
       })),
     };
   }
+
+  return {};
 };
+
+const nextDerivedElementsGetters = [
+  (state: IState, derivedElements: IDerivedElements): IDerivedElements => {
+    const C = getPoint("C", state, derivedElements);
+    const P1 = getPoint("P1", state, derivedElements);
+
+    if (C && P1) {
+      return {
+        lines: [{ start: C, end: P1 }],
+      };
+    }
+
+    return {};
+  },
+];
 
 export const mount = (id: string) => {
   ReactDOM.render(
@@ -66,6 +82,7 @@ export const mount = (id: string) => {
       <InteractivePlot
         initialState={initialState}
         getDerivedElements={getDerivedElements}
+        nextDerivedElementsGetters={nextDerivedElementsGetters}
       />
     </React.StrictMode>,
     document.getElementById(id)
