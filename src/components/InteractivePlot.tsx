@@ -45,22 +45,13 @@ export const getPoint = (
   }
 };
 
-interface InteractivePlotProps {
-  initialState: IState;
-  getDerivedElements: (state: IState) => IDerivedElements;
-  nextDerivedElementsGetters?: ((
-    state: IState,
-    derivedElements: IDerivedElements
-  ) => IDerivedElements)[];
-}
-
 const mergeArrays = <T extends unknown>(a?: T[], b?: T[]): T[] => {
   const _a = a || [];
   const _b = b || [];
   return [..._a, ..._b];
 };
 
-const mergeDerivedStates = (
+const mergeDerivedElements = (
   a: IDerivedElements,
   b: IDerivedElements
 ): IDerivedElements => ({
@@ -70,36 +61,37 @@ const mergeDerivedStates = (
   lines: mergeArrays(a.lines, b.lines),
 });
 
-const getMergedDerivedStates = (
+const getMergedDerivedElements = (
   state: IState,
-  derivedState: IDerivedElements,
-  nextDerivedElementsGetters: ((
+  drivedElementsGetters: ((
     state: IState,
     derivedElements: IDerivedElements
   ) => IDerivedElements)[]
-) =>
-  mergeDerivedStates(
-    derivedState,
-    nextDerivedElementsGetters.reduce(
-      (acc, currGetter) => currGetter(state, acc),
-      derivedState
-    )
+): IDerivedElements =>
+  drivedElementsGetters.reduce(
+    (acc, currGetter) => mergeDerivedElements(acc, currGetter(state, acc)),
+    {}
   );
+
+interface InteractivePlotProps {
+  initialState: IState;
+  drivedElementsGetters?: ((
+    state: IState,
+    derivedElements: IDerivedElements
+  ) => IDerivedElements)[];
+}
 
 export default function InteractivePlot({
   initialState,
-  getDerivedElements,
-  nextDerivedElementsGetters,
+  drivedElementsGetters,
 }: InteractivePlotProps) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const svgRef = React.createRef<SVGSVGElement>();
 
-  const derivedState = getDerivedElements(state);
-
-  const mergedDerivedStates = nextDerivedElementsGetters
-    ? getMergedDerivedStates(state, derivedState, nextDerivedElementsGetters)
-    : derivedState;
+  const mergedDerivedStates = drivedElementsGetters
+    ? getMergedDerivedElements(state, drivedElementsGetters)
+    : {};
 
   const { circles, arrows, lines, derivedPoints } = mergedDerivedStates;
 

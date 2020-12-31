@@ -33,35 +33,38 @@ const initialState: IState = {
   dragging: undefined,
 };
 
-const getDerivedElements = (state: IState): IDerivedElements => {
-  const A = getPoint("A", state);
-  const B = getPoint("B", state);
-  const C = getPoint("C", state);
+const drivedElementsGetters = [
+  (state: IState): IDerivedElements => {
+    const A = getPoint("A", state);
+    const B = getPoint("B", state);
+    const C = getPoint("C", state);
 
-  if (A && B && C) {
-    const circle: MathCircle = { center: C, radius: 120 };
-    const line: MathLine = { through: A, direction: B.subtract(A) };
+    if (A && B && C) {
+      const circle: MathCircle = { center: C, radius: 120 };
+      const line: MathLine = { through: A, direction: B.subtract(A) };
 
-    const points = circleLineIntersection(circle, line);
+      const aInside = distance(A, C) < 120;
+      const bInside = distance(B, C) < 120;
 
-    return {
-      circles: [
-        { center: C, radius: 60 },
-        { center: C, radius: 120, transparent: true },
-      ],
-      arrows: [{ start: A, end: B, error: distance(B, C) < 120 }],
-      derivedPoints: points.map(({ x, y }, index) => ({
-        id: `P${String(index + 1)}`,
-        x,
-        y,
-      })),
-    };
-  }
+      const points =
+        !aInside && bInside ? circleLineIntersection(circle, line) : [];
 
-  return {};
-};
+      return {
+        circles: [
+          { center: C, radius: 60 },
+          { center: C, radius: 120, transparent: true },
+        ],
+        arrows: [{ start: A, end: B, error: bInside }],
+        derivedPoints: points.map(({ x, y }, index) => ({
+          id: `P${String(index + 1)}`,
+          x,
+          y,
+        })),
+      };
+    }
 
-const nextDerivedElementsGetters = [
+    return {};
+  },
   (state: IState, derivedElements: IDerivedElements): IDerivedElements => {
     const C = getPoint("C", state, derivedElements);
     const P1 = getPoint("P1", state, derivedElements);
@@ -81,8 +84,7 @@ export const mount = (id: string) => {
     <React.StrictMode>
       <InteractivePlot
         initialState={initialState}
-        getDerivedElements={getDerivedElements}
-        nextDerivedElementsGetters={nextDerivedElementsGetters}
+        drivedElementsGetters={drivedElementsGetters}
       />
     </React.StrictMode>,
     document.getElementById(id)

@@ -69,7 +69,7 @@ export const mount = (id: string) => {
     <React.StrictMode>
       <InteractivePlot
         initialState={initialState}
-        getDerivedElements={getDerivedElements}
+        drivedElementsGetters={[getDerivedElements]}
       />
     </React.StrictMode>,
     document.getElementById(id)
