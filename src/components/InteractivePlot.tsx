@@ -7,7 +7,7 @@ import Point from "./Point";
 import PointsDebug from "./PointsDebug";
 import { IState, IAction, IDerivedElements } from "../util/types";
 import { POINTS_DEBUG } from "../util/env";
-import Line from "./Line";
+import LineSegment from "./LineSegment";
 
 function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
@@ -58,7 +58,7 @@ const mergeDerivedElements = (
   arrows: mergeArrays(a.arrows, b.arrows),
   circles: mergeArrays(a.circles, b.circles),
   derivedPoints: mergeArrays(a.derivedPoints, b.derivedPoints),
-  lines: mergeArrays(a.lines, b.lines),
+  lineSegments: mergeArrays(a.lineSegments, b.lineSegments),
 });
 
 const getMergedDerivedElements = (
@@ -93,7 +93,7 @@ export default function InteractivePlot({
     ? getMergedDerivedElements(state, drivedElementsGetters)
     : {};
 
-  const { circles, arrows, lines, derivedPoints } = mergedDerivedStates;
+  const { circles, arrows, lineSegments, derivedPoints } = mergedDerivedStates;
 
   return (
     <BaseSVG
@@ -123,8 +123,8 @@ export default function InteractivePlot({
             transparent={transparent}
           />
         ))}
-        {lines?.map(({ start, end, error, label }) => (
-          <Line
+        {lineSegments?.map(({ start, end, error, label }) => (
+          <LineSegment
             x1={start.x}
             y1={start.y}
             x2={end.x}

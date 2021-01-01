@@ -6,6 +6,7 @@ import {
   distance,
   MathCircle,
   MathLine,
+  perpendicularLine,
 } from "../util/math";
 import { IDerivedElements, IState } from "../util/types";
 
@@ -70,8 +71,20 @@ const drivedElementsGetters = [
     const P1 = getPoint("P1", state, derivedElements);
 
     if (C && P1) {
+      const tangent = perpendicularLine({
+        direction: P1.subtract(C),
+        through: P1,
+      });
+
+      const intersectionRadius = { start: C, end: P1 };
+
+      const tangentLine = {
+        start: tangent.through,
+        end: tangent.through.add(tangent.direction),
+      };
+
       return {
-        lines: [{ start: C, end: P1 }],
+        lineSegments: [intersectionRadius, tangentLine],
       };
     }
 

@@ -25,7 +25,7 @@ export interface IArrow {
   error?: boolean;
 }
 
-export interface ILine {
+export interface ILineSegment {
   start: Vector2D;
   end: Vector2D;
   label?: string;
@@ -35,7 +35,7 @@ export interface ILine {
 export interface IDerivedElements {
   circles?: ICircle[];
   arrows?: IArrow[];
-  lines?: ILine[];
+  lineSegments?: ILineSegment[];
   derivedPoints?: IPoint[];
 }
 

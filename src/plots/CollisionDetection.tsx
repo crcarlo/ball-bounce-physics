@@ -46,7 +46,7 @@ const getDerivedElements = (state: IState): IDerivedElements => {
         },
       ],
       arrows: [{ start: A, end: B, error: distance(B, C) < 120 }],
-      lines: [
+      lineSegments: [
         {
           start: B,
           end: C,

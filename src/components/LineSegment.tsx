@@ -1,7 +1,7 @@
 import * as React from "react";
 import Label from "./Label";
 
-interface LineProps {
+interface LineSegmentProps {
   x1: number;
   y1: number;
   x2: number;
@@ -11,7 +11,7 @@ interface LineProps {
   transparent?: boolean;
 }
 
-export default function Line({
+export default function LineSegment({
   x1,
   y1,
   x2,
@@ -19,7 +19,7 @@ export default function Line({
   label,
   error,
   transparent,
-}: LineProps) {
+}: LineSegmentProps) {
   const middle = { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 };
   return (
     <>
