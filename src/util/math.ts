@@ -39,6 +39,29 @@ export class Vector2D {
   }
 }
 
+class Vector2DPolar {
+  radius: number;
+  angle: number;
+
+  constructor(radius: number, angle: number) {
+    this.radius = radius;
+    this.angle = angle;
+  }
+
+  toCartesianVector() {
+    const x = this.radius * Math.cos(this.angle);
+    const y = this.radius * Math.sin(this.angle);
+    return new Vector2D(x, y);
+  }
+
+  static fromCartesianVector(cartesianVector: Vector2D) {
+    const { x, y } = cartesianVector;
+    const angle = Math.atan(y / x);
+    const radius = distance(new Vector2D(0, 0), cartesianVector);
+    return new Vector2DPolar(radius, angle);
+  }
+}
+
 export interface MathCircle {
   center: Vector2D;
   radius: number;
@@ -109,3 +132,15 @@ export const circleLineIntersection = (
 
 export const distance = (a: Vector2D, b: Vector2D) =>
   a && b && Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+
+export const perpendicularLine = ({
+  direction,
+  through,
+}: MathLine): MathLine => {
+  const polarDirection = Vector2DPolar.fromCartesianVector(direction);
+  const perpendicularDirection = new Vector2DPolar(
+    polarDirection.radius,
+    polarDirection.angle + Math.PI / 2
+  );
+  return { direction: perpendicularDirection.toCartesianVector(), through };
+};
