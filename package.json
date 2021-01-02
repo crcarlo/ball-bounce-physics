@@ -1,7 +1,11 @@
 {
-  "name": "ray-bounce-physics",
+  "author": {
+    "name": "Carlo Cervellin",
+    "url": "https://github.com/crcarlo"
+  },
+  "name": "ball-bounce-physics",
   "version": "1.0.0",
-  "description": "Calculating the bounce effect of a point on a shape",
+  "description": "Calculating the bounce effect of a 2D ball on a static object",
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
