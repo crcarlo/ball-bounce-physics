@@ -1,13 +1,16 @@
 import * as React from "react";
-import { distance, Vector2D } from "../util/math";
+
 import Arrow from "./Arrow";
 import BaseSVG from "./BaseSVG";
 import Circle from "./Circle";
 import Point from "./Point";
 import PointsDebug from "./PointsDebug";
-import { IState, IAction, IDerivedElements } from "../util/types";
-import { POINTS_DEBUG } from "../util/env";
 import LineSegment from "./LineSegment";
+
+import { POINTS_DEBUG } from "../util/env";
+import { distance, Vector2D } from "../util/math";
+import { IState, IAction, IDerivedElements } from "../util/types";
+import Line from "./Line";
 
 function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
@@ -59,6 +62,7 @@ const mergeDerivedElements = (
   circles: mergeArrays(a.circles, b.circles),
   derivedPoints: mergeArrays(a.derivedPoints, b.derivedPoints),
   lineSegments: mergeArrays(a.lineSegments, b.lineSegments),
+  lines: mergeArrays(a.lines, b.lines),
 });
 
 const getMergedDerivedElements = (
@@ -93,7 +97,13 @@ export default function InteractivePlot({
     ? getMergedDerivedElements(state, drivedElementsGetters)
     : {};
 
-  const { circles, arrows, lineSegments, derivedPoints } = mergedDerivedStates;
+  const {
+    circles,
+    arrows,
+    lineSegments,
+    lines,
+    derivedPoints,
+  } = mergedDerivedStates;
 
   return (
     <BaseSVG
@@ -129,6 +139,17 @@ export default function InteractivePlot({
             y1={start.y}
             x2={end.x}
             y2={end.y}
+            label={label}
+            transparent
+            error={error}
+          />
+        ))}
+        {lines?.map(({ through, direction, error, label }) => (
+          <Line
+            x={through.x}
+            y={through.y}
+            dx={direction.x}
+            dy={direction.y}
             label={label}
             transparent
             error={error}

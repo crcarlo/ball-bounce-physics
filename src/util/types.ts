@@ -32,10 +32,18 @@ export interface ILineSegment {
   error?: boolean;
 }
 
+export interface ILine {
+  through: Vector2D;
+  direction: Vector2D;
+  label?: string;
+  error?: boolean;
+}
+
 export interface IDerivedElements {
   circles?: ICircle[];
   arrows?: IArrow[];
   lineSegments?: ILineSegment[];
+  lines?: ILine[];
   derivedPoints?: IPoint[];
 }
 

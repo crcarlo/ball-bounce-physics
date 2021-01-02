@@ -67,24 +67,31 @@ const drivedElementsGetters = [
     return {};
   },
   (state: IState, derivedElements: IDerivedElements): IDerivedElements => {
+    const B = getPoint("B", state, derivedElements);
     const C = getPoint("C", state, derivedElements);
     const P1 = getPoint("P1", state, derivedElements);
 
-    if (C && P1) {
+    if (B && C && P1) {
+      const radiusDirection = P1.subtract(C);
+
       const tangent = perpendicularLine({
-        direction: P1.subtract(C),
+        direction: radiusDirection,
         through: P1,
       });
 
-      const intersectionRadius = { start: C, end: P1 };
-
-      const tangentLine = {
-        start: tangent.through,
-        end: tangent.through.add(tangent.direction),
+      const reflectionLine: MathLine = {
+        through: B,
+        direction: radiusDirection,
       };
 
+      const intersectionRadius = { start: C, end: P1 };
+
       return {
-        lineSegments: [intersectionRadius, tangentLine],
+        lineSegments: [intersectionRadius],
+        lines: [
+          { direction: tangent.direction, through: tangent.through },
+          reflectionLine,
+        ],
       };
     }
 
