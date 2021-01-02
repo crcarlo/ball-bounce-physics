@@ -16,8 +16,6 @@ export default function Circle({
   error,
   transparent,
 }: CircleProps) {
-  const [active, setActive] = React.useState(false);
-
   return (
     <>
       <circle
