@@ -37,6 +37,10 @@ export class Vector2D {
   static copy(vector: Vector2D) {
     return new Vector2D(vector.x, vector.y);
   }
+
+  static cross(a: Vector2D, b: Vector2D) {
+    return a.x * b.y - a.y * b.x;
+  }
 }
 
 class Vector2DPolar {
@@ -143,4 +147,25 @@ export const perpendicularLine = ({
     polarDirection.angle + Math.PI / 2
   );
   return { direction: perpendicularDirection.toCartesianVector(), through };
+};
+
+export const linesIntersection = (
+  lineA: MathLine,
+  lineB: MathLine
+): Vector2D | undefined => {
+  const directionCross = Vector2D.cross(lineA.direction, lineB.direction);
+  if (directionCross === 0) {
+    return;
+  }
+  const u =
+    Vector2D.cross(lineB.through.subtract(lineA.through), lineA.direction) /
+    directionCross;
+  return lineB.through.add(lineB.direction.multiplyScalar(u));
+};
+
+export const symmetricPoint = (
+  original: Vector2D,
+  mirror: Vector2D
+): Vector2D => {
+  return mirror.add(mirror.subtract(original));
 };

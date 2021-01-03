@@ -10,30 +10,29 @@ import {
   perpendicularLine,
   symmetricPoint,
 } from "../util/math";
-import { IDerivedElements, IPoint, IState } from "../util/types";
+import { ICircle, IDerivedElements, IPoint, IState } from "../util/types";
 
 const initialState: IState = {
   points: [
     {
       id: "A",
-      x: 240,
-      y: 140,
+      x: 210,
+      y: 230,
       draggable: true,
     },
     {
       id: "B",
-      x: 430,
-      y: 140,
+      x: 350,
+      y: 110,
       draggable: true,
     },
     {
       id: "C",
-      x: 430,
-      y: 220,
+      x: 400,
+      y: 190,
       draggable: true,
     },
   ],
-  dragging: undefined,
 };
 
 const drivedElementsGetters = [
@@ -54,14 +53,16 @@ const drivedElementsGetters = [
 
       return {
         circles: [
+          { center: A, radius: 60 },
+          // { center: B, radius: 60, transparent: true },
           { center: C, radius: 60 },
-          { center: C, radius: 120, transparent: true },
         ],
         arrows: [{ start: A, end: B, error: bInside }],
         derivedPoints: points.map(({ x, y }, index) => ({
           id: `P${String(index + 1)}`,
           x,
           y,
+          hidden: true,
         })),
       };
     }
@@ -86,24 +87,29 @@ const drivedElementsGetters = [
         direction: radiusDirection,
       };
 
-      const intersectionRadius = { start: C, end: P1 };
-
       const M = linesIntersection(tangent, reflectionLine);
+      const B1 = M && symmetricPoint(B, M);
 
-      const derivedPoints: IPoint[] = M
-        ? [
-            { id: "M", ...M },
-            { ...symmetricPoint(B, M), id: "B1" },
-          ]
-        : [];
+      const B1circle = B1 && { center: B1, radius: 60 };
+
+      const derivedPoints: IPoint[] = B1 ? [{ ...B1, id: "B1" }] : [];
 
       return {
         derivedPoints: derivedPoints,
-        lineSegments: [intersectionRadius],
-        lines: [
-          { direction: tangent.direction, through: tangent.through },
-          reflectionLine,
-        ],
+        circles: [{ center: P1, radius: 60, transparent: true }],
+      };
+    }
+
+    return {};
+  },
+  (state: IState, derivedElements: IDerivedElements): IDerivedElements => {
+    const B1 = getPoint("B1", state, derivedElements);
+    const P1 = getPoint("P1", state, derivedElements);
+
+    if (B1 && P1) {
+      return {
+        circles: [{ center: B1, radius: 60 }],
+        arrows: [{ start: P1, end: B1 }],
       };
     }
 

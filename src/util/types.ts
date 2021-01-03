@@ -5,6 +5,7 @@ export interface IPoint {
   y: number;
   id: string;
   draggable?: boolean;
+  hidden?: boolean;
 }
 
 export interface IState {

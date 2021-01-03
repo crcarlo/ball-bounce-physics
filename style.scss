@@ -31,14 +31,30 @@ p {
 
 .point {
   &.point-draggable {
-    cursor: pointer;
+    .point-dot {
+      cursor: pointer;
+      fill: #4a74c5;
+      stroke: black;
+    }
+  }
+
+  .point-dot {
+    fill: #333;
+  }
+
+  .point-label {
+    font-size: 18px;
+
+    .label-outline {
+      stroke-width: 4px;
+    }
   }
 }
 
 .label-outline {
   fill-opacity: 1;
   stroke: #fff;
-  stroke-width: 2px;
+  stroke-width: 4px;
   stroke-linecap: butt;
   stroke-linejoin: miter;
   stroke-opacity: 1;

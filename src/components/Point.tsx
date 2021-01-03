@@ -22,10 +22,12 @@ export default function Point({
   dragging,
 }: PointProps) {
   return (
-    <>
-      {label && <Label x={x + 7} y={y - 7} text={label} />}
+    <g className={clsx("point", draggable && "point-draggable")}>
+      {label && (
+        <Label x={x + 7} y={y - 7} text={label} className="point-label" />
+      )}
       <circle
-        className={clsx("point", draggable && "point-draggable")}
+        className="point-dot"
         cx={x}
         cy={y}
         r={4}
@@ -37,6 +39,6 @@ export default function Point({
           setDragging(false);
         }}
       />
-    </>
+    </g>
   );
 }

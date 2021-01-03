@@ -4,6 +4,7 @@ import * as TheProblem from "./plots/TheProblem";
 import * as CollisionDetection from "./plots/CollisionDetection";
 import * as CollisionDetectionSingleBall from "./plots/CollisionDetectionSingleBall";
 import * as PointOfCollision from "./plots/PointOfCollision";
+import * as Result from "./plots/Result";
 
 // Fig. 1
 MovingBall.mount("movingBall");
@@ -17,3 +18,5 @@ CollisionDetection.mount("collisionDetection");
 CollisionDetectionSingleBall.mount("collisionDetectionSingleBall");
 // Fig. 6
 PointOfCollision.mount("pointOfCollision");
+// Fig. 7
+Result.mount("result");

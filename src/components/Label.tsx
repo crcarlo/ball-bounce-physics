@@ -4,17 +4,18 @@ interface LabelProps {
   x: number;
   y: number;
   text: string;
+  className?: string;
 }
 
-export default function Label({ x, y, text }: LabelProps) {
+export default function Label({ x, y, text, className }: LabelProps) {
   return (
-    <>
-      <text x={x} y={y} className="label-outline">
+    <g className={className}>
+      <text x={x} y={y} className={"label-outline"}>
         {text}
       </text>
       <text x={x} y={y}>
         {text}
       </text>
-    </>
+    </g>
   );
 }
