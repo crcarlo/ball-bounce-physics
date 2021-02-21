@@ -22,7 +22,13 @@ export default function Point({
   dragging,
 }: PointProps) {
   return (
-    <g className={clsx("point", draggable && "point-draggable")}>
+    <g
+      className={clsx(
+        "point",
+        draggable && "point-draggable",
+        dragging && "dragging"
+      )}
+    >
       {label && (
         <Label x={x + 7} y={y - 7} text={label} className="point-label" />
       )}

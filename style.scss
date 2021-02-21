@@ -32,9 +32,15 @@ p {
 .point {
   &.point-draggable {
     .point-dot {
-      cursor: pointer;
+      cursor: grab;
       fill: #4a74c5;
       stroke: black;
+    }
+
+    &.dragging {
+      .point-dot {
+        cursor: grabbing;
+      }
     }
   }
 
@@ -44,6 +50,7 @@ p {
 
   .point-label {
     font-size: 18px;
+    user-select: none;
 
     .label-outline {
       stroke-width: 4px;
