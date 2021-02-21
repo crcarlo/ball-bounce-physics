@@ -12,44 +12,52 @@
         In this article I am discussing a possible aproach on how to implement a
         collision detection and bounce beaviour of a 2D circular moving object
         on other static objects.<br /><br />
-        In this article you will find interactive examples.
+        You will also find interactive examples and a link to the source code.
       </p>
       <div class="interactive-example" id="result"></div>
-      <span> Fig. 0 </span>
+      <span> Fig. 1 </span>
       <h2>The problem</h2>
       <p>
         Imagine you are writing a simulation or a game that involves some kind
         of ball physics, like Pinball or Pachinko. <br />
         <br />
         I'm assuming that the simulation involves a cycle of update of the ball
-        position depending on the velocity and position of the previous state.
+        position depending on velocity and position of the previous state (like
+        a
+        <a
+          href="https://en.wikipedia.org/wiki/Verlet_integration#Algorithmic_representation"
+          target="blank"
+          >Verlet integration</a
+        >).
         <br />
         <br />
         So you have a ball object that on a certain moment t_n is located in A
-        and on t_n+1 is on B. <br />
+        and on t_(n+1) is in B. <br />
         <br />
       </p>
       <div class="interactive-example" id="movingBall"></div>
-      <span> Fig. 1 </span>
+      <span> Fig. 2 </span>
       <p>
         What may happen is that at a certain point the next state of the ball is
-        invalid because of a collision with another object (like a peg for
-        example). <br />
+        going to collide with another object (like a peg for example). <br />
         <br />
-        In this case we will consider a collision with a static ball (I.E. that
+        In this case we will consider a collision with a static ball (i.e. that
         won't move) centered in C.
       </p>
       <div class="interactive-example" id="circleLineIntersection"></div>
-      <span> Fig. 2 </span>
+      <span> Fig. 3 </span>
       <p>
-        At this point we might want to find a new valid state for our moving
-        ball by detecting the collision and following a bounce behaviour.
+        At this point we might want to find a new not colliding state for our
+        moving ball by detecting the collision and calculating a bounce
+        behaviour.
         <br />
         <br />
-        This means we want to find a new valid state for our ball. How?
+        This means we want to find the new position for the ball and new
+        direction away from the object that caused the collision. <br /><br />
+        So how do we do it?
       </p>
       <div class="interactive-example" id="theProblem"></div>
-      <span> Fig. 3 </span>
+      <span> Fig. 4 </span>
       <h2>The simplified problem</h2>
       <p>
         First of all. How do we find out if the next state is colliding? <br />
@@ -58,42 +66,67 @@
         of our ball in the next state is colliding with the static object.
         <br />
         <br />
-        If the distance is less than the sum of the radii then is colliding,
+        If the distance is less than the sum of the radii then it's colliding,
         otherwise it is not.
       </p>
       <div class="interactive-example" id="collisionDetection"></div>
-      <span> Fig. 4 </span>
-      <p>Where</p>
-      <code>
-        function distance(B, C) {<br />
-        &nbsp; const dx = C.x - B.x; <br />
-        &nbsp; const dy = C.y - B.y; <br />
-        &nbsp; return Math.sqrt(dx * dx + dy * dy); <br />
-        }
-      </code>
+      <span> Fig. 5 </span>
       <p>
-        Now that we have discovered a collision how do we find the bounce
+        Now that we have discovered a collision how do we implement a bounce
         effect? <br />
         <br />
-        Calculating the bounce effect of circular objects might seem
-        complicated. Let's try a simpler aproach. <br />
+        That might sound complicated having two circular objects. You may say
+        that the moving ball should stop at the point it touches the other ball,
+        then bounce back. But how do we find where it should stop? Let's try a
+        simpler aproach. <br />
         <br />
-        We might notice that the collision detection and the desired behaviour
-        is the same that we would obtain by calculating the same effect with a
-        single point and a ball of radius equal to the sum of the two balls.
-        <br />
-        <br />
-        I won't demonstrate that in this article. But you might get convinced by
-        taking a look at the example below where I'll reproduce the same problem
-        in this way.
+        We might notice that the collision detection is the same that we would
+        obtain by calculating the moving effect of a single point colliding with
+        a ball of radius equal to the sum of the radii of the two balls.
       </p>
       <div class="interactive-example" id="collisionDetectionSingleBall"></div>
-      <span> Fig. 5 </span>
-      <div class="interactive-example" id="pointOfCollision"></div>
       <span> Fig. 6 </span>
-      <h2>Circle-line intersection</h2>
+      <p class="note">
+        <b>NOTE</b> <br />
+        By using this collision detection algorythm we will not detect a
+        collision in case the line segment AB (trajectory of our ball)
+        intersects the the colliding object and B is not in a colliding
+        position. We are just going to ignore this case, but you might use a
+        different aproach if you want to avoid this problem by calculating the
+        interseciton point between the segment and the ball (that might be more
+        demanding in terms of total computations).
+      </p>
+      <p>
+        Likely the point of collision is where the segment AB intersects the
+        ball cenetered in C with radius equal to the sum of the radii.
+      </p>
+      <div class="interactive-example" id="pointOfIntersection"></div>
+      <h2>Concolusion</h2>
+      <p>
+        At this point we just need to calculate the reflection of the segment
+        P1B on the tangent line of the ball on P1. <br /><br />
+        That means that we need to find the symmetric point of B on the tangent
+        line.
+      </p>
+      <div class="interactive-example" id="pointOfCollision"></div>
+      <span> Fig. 7 </span>
+      <p>
+        And so we found B1. <br />
+        <br />
+        We can also calculate the new direction for the ball. That is B1 - P1.
+      </p>
+      <h2>Source code and more</h2>
+      <p>
+        Source code of the examples can be found here 👉
+        <a href="https://github.com/crcarlo/ball-bounce-physics"
+          >github.com/crcarlo/ball-bounce-physics</a
+        >. <br /><br />
+        For any questions or suggestions you can open an issue here 👉
+        <a href="https://github.com/crcarlo/ball-bounce-physics/issues"
+          >github.com/crcarlo/ball-bounce-physics/issues</a
+        >
+      </p>
     </div>
-
     <script src="src/index.ts"></script>
   </body>
 </html>

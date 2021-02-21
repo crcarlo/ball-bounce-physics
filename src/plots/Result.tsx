@@ -42,6 +42,23 @@ const drivedElementsGetters = [
     const C = getPoint("C", state);
 
     if (A && B && C) {
+      const bInside = distance(B, C) < 120;
+
+      return {
+        circles: bInside
+          ? undefined
+          : [{ center: B, radius: 60, transparent: true }],
+      };
+    }
+
+    return {};
+  },
+  (state: IState): IDerivedElements => {
+    const A = getPoint("A", state);
+    const B = getPoint("B", state);
+    const C = getPoint("C", state);
+
+    if (A && B && C) {
       const circle: MathCircle = { center: C, radius: 120 };
       const line: MathLine = { through: A, direction: B.subtract(A) };
 
@@ -54,7 +71,6 @@ const drivedElementsGetters = [
       return {
         circles: [
           { center: A, radius: 60 },
-          // { center: B, radius: 60, transparent: true },
           { center: C, radius: 60 },
         ],
         arrows: [{ start: A, end: B, error: bInside }],
@@ -90,13 +106,10 @@ const drivedElementsGetters = [
       const M = linesIntersection(tangent, reflectionLine);
       const B1 = M && symmetricPoint(B, M);
 
-      const B1circle = B1 && { center: B1, radius: 60 };
-
       const derivedPoints: IPoint[] = B1 ? [{ ...B1, id: "B1" }] : [];
 
       return {
         derivedPoints: derivedPoints,
-        circles: [{ center: P1, radius: 60, transparent: true }],
       };
     }
 
@@ -108,7 +121,7 @@ const drivedElementsGetters = [
 
     if (B1 && P1) {
       return {
-        circles: [{ center: B1, radius: 60 }],
+        circles: [{ center: B1, radius: 60, transparent: true }],
         arrows: [{ start: P1, end: B1 }],
       };
     }
