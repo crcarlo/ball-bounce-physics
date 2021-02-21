@@ -18,11 +18,18 @@ h2 {
 p {
   font-size: 22px;
   line-height: 28px;
+
+  &.note {
+    padding-left: 18px;
+    border-left: 8px solid #ccc;
+    font-size: 18px;
+    line-height: 20px;
+  }
 }
 
 .article {
   max-width: 700px;
-  margin: auto;
+  margin: 0 auto 120px;
 
   .interactive-example {
     width: 100%;
