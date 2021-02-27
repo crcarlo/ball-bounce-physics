@@ -9,7 +9,7 @@
   "main": "index.html",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "parcel build --public-url . index.html --out-dir docs/"
   },
   "dependencies": {
     "clsx": "^1.1.1",
