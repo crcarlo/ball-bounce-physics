@@ -32,7 +32,9 @@ export default function Line({
   const bFar = line.through.add(line.direction.multiplyScalar(-100));
   return (
     <>
-      {label && <Label x={middle.x} y={middle.y} text={label} />}
+      {label && (
+        <Label x={middle.x} y={middle.y} text={label} className="line-label" />
+      )}
       <line
         x1={aFar.x}
         y1={aFar.y}
