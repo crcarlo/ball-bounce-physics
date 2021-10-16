@@ -6,11 +6,11 @@ import Label from "./Label";
 interface PointProps {
   x: number;
   y: number;
-  draggable: boolean;
-  dragging: boolean;
+  draggable?: boolean;
+  dragging?: boolean;
   label?: string;
   key: string;
-  setDragging: (dragging: boolean) => void;
+  setDragging?: (dragging: boolean) => void;
 }
 
 export default function Point({
@@ -38,12 +38,8 @@ export default function Point({
         cy={y}
         r={4}
         fill="black"
-        onMouseDown={() => {
-          setDragging(true);
-        }}
-        onMouseUp={() => {
-          setDragging(false);
-        }}
+        onMouseDown={() => setDragging && setDragging(true)}
+        onMouseUp={() => setDragging && setDragging(false)}
       />
     </g>
   );

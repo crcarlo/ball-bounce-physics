@@ -24,7 +24,14 @@ export default function LineSegment({
   const middle = { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 };
   return (
     <>
-      {label && <Label x={middle.x} y={middle.y} text={label} />}
+      {label && (
+        <Label
+          x={middle.x}
+          y={middle.y}
+          text={label}
+          className="line-segment-label"
+        />
+      )}
       <line
         x1={x1}
         y1={y1}

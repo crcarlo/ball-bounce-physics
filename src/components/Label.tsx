@@ -1,4 +1,5 @@
 import * as React from "react";
+import clsx from "clsx";
 
 interface LabelProps {
   x: number;
@@ -9,7 +10,7 @@ interface LabelProps {
 
 export default function Label({ x, y, text, className }: LabelProps) {
   return (
-    <g className={className}>
+    <g className={clsx("label", className)}>
       <text x={x} y={y} className={"label-outline"}>
         {text}
       </text>

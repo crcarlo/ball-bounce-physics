@@ -48,6 +48,7 @@ const drivedElementsGetters = [
         circles: bInside
           ? undefined
           : [{ center: B, radius: 60, transparent: true }],
+        arrows: bInside ? undefined : [{ start: A, end: B }],
       };
     }
 
@@ -73,7 +74,6 @@ const drivedElementsGetters = [
           { center: A, radius: 60 },
           { center: C, radius: 60 },
         ],
-        arrows: [{ start: A, end: B, error: bInside }],
         derivedPoints: points.map(({ x, y }, index) => ({
           id: `P${String(index + 1)}`,
           x,
@@ -86,11 +86,12 @@ const drivedElementsGetters = [
     return {};
   },
   (state: IState, derivedElements: IDerivedElements): IDerivedElements => {
+    const A = getPoint("A", state, derivedElements);
     const B = getPoint("B", state, derivedElements);
     const C = getPoint("C", state, derivedElements);
     const P1 = getPoint("P1", state, derivedElements);
 
-    if (B && C && P1) {
+    if (A && B && C && P1) {
       const radiusDirection = P1.subtract(C);
 
       const tangent = perpendicularLine({
@@ -110,6 +111,15 @@ const drivedElementsGetters = [
 
       return {
         derivedPoints: derivedPoints,
+        lineSegments: [{ start: A, end: P1 }],
+        arrows: [{ start: P1, end: B, error: true }],
+        circles: [
+          {
+            center: P1,
+            radius: 60,
+            transparent: true,
+          },
+        ],
       };
     }
 
@@ -121,7 +131,6 @@ const drivedElementsGetters = [
 
     if (B1 && P1) {
       return {
-        circles: [{ center: B1, radius: 60, transparent: true }],
         arrows: [{ start: P1, end: B1 }],
       };
     }
@@ -136,6 +145,7 @@ export const mount = (id: string) => {
       <InteractivePlot
         initialState={initialState}
         drivedElementsGetters={drivedElementsGetters}
+        tutorial="B"
       />
     </React.StrictMode>,
     document.getElementById(id)

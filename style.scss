@@ -57,7 +57,6 @@ p {
 
   .point-label {
     font-size: 18px;
-    user-select: none;
 
     .label-outline {
       stroke-width: 4px;
@@ -65,11 +64,35 @@ p {
   }
 }
 
-.label-outline {
-  fill-opacity: 1;
-  stroke: #fff;
-  stroke-width: 4px;
-  stroke-linecap: butt;
-  stroke-linejoin: miter;
-  stroke-opacity: 1;
+.label {
+  user-select: none;
+
+  .label-outline {
+    fill-opacity: 1;
+    stroke: #fff;
+    stroke-width: 4px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    stroke-opacity: 1;
+  }
+}
+
+@keyframes bouncy-animation {
+  0% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.tutorial-marker {
+  animation-name: bouncy-animation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  font-size: 25px;
+  user-select: none;
 }
