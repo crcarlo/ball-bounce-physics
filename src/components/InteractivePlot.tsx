@@ -15,10 +15,15 @@ import Line from "./Line";
 function reducer(state: IState, action: IAction): IState {
   switch (action.type) {
     case "set-dragging":
-      return { points: state.points, dragging: action.dragging };
+      return {
+        points: state.points,
+        dragging: action.dragging,
+        alredyDragged: true,
+      };
     case "move":
       const { x, y, pointId } = action;
       return {
+        ...state,
         points: state.points.map(({ id, ...restPoint }) =>
           pointId === id
             ? { id, ...restPoint, x: x || 0, y: y || 0 }
@@ -83,11 +88,13 @@ interface InteractivePlotProps {
     state: IState,
     derivedElements: IDerivedElements
   ) => IDerivedElements)[];
+  tutorial: string;
 }
 
 export default function InteractivePlot({
   initialState,
   drivedElementsGetters,
+  tutorial,
 }: InteractivePlotProps) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -97,13 +104,8 @@ export default function InteractivePlot({
     ? getMergedDerivedElements(state, drivedElementsGetters)
     : {};
 
-  const {
-    circles,
-    arrows,
-    lineSegments,
-    lines,
-    derivedPoints,
-  } = mergedDerivedStates;
+  const { circles, arrows, lineSegments, lines, derivedPoints } =
+    mergedDerivedStates;
 
   return (
     <BaseSVG
@@ -167,38 +169,30 @@ export default function InteractivePlot({
         ))}
         {derivedPoints?.map(
           ({ x, y, id, hidden }) =>
-            !hidden && (
-              <Point
-                x={x}
-                y={y}
-                key={id}
-                label={id}
-                draggable={false}
-                dragging={state.dragging === id}
-                setDragging={(dragging) => {
-                  dispatch({
-                    type: "set-dragging",
-                    dragging: dragging ? id : undefined,
-                  });
-                }}
-              />
-            )
+            !hidden && <Point x={x} y={y} key={id} label={id} />
         )}
         {state.points.map(({ x, y, id, draggable }) => (
-          <Point
-            x={x}
-            y={y}
-            key={id}
-            label={id}
-            draggable={draggable || false}
-            dragging={state.dragging === id}
-            setDragging={(dragging) => {
-              dispatch({
-                type: "set-dragging",
-                dragging: dragging ? id : undefined,
-              });
-            }}
-          />
+          <g key={id}>
+            {!state.alredyDragged && id === tutorial && (
+              <text className="tutorial-marker" x={x - 40} y={y + 8}>
+                👉
+              </text>
+            )}
+            <Point
+              x={x}
+              y={y}
+              key={id}
+              label={id}
+              draggable={draggable || false}
+              dragging={state.dragging === id}
+              setDragging={(dragging) => {
+                dispatch({
+                  type: "set-dragging",
+                  dragging: dragging ? id : undefined,
+                });
+              }}
+            />
+          </g>
         ))}
       </>
     </BaseSVG>

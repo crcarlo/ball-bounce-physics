@@ -145,6 +145,7 @@ export const mount = (id: string) => {
       <InteractivePlot
         initialState={initialState}
         drivedElementsGetters={drivedElementsGetters}
+        tutorial="B"
       />
     </React.StrictMode>,
     document.getElementById(id)

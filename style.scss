@@ -76,3 +76,22 @@ p {
     stroke-opacity: 1;
   }
 }
+
+@keyframes bouncy-animation {
+  0% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.tutorial-marker {
+  animation-name: bouncy-animation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  font-size: 25px;
+}

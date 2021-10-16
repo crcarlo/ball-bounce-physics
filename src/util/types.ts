@@ -11,6 +11,7 @@ export interface IPoint {
 export interface IState {
   points: IPoint[];
   dragging?: string;
+  alredyDragged?: boolean;
 }
 
 export interface ICircle {
